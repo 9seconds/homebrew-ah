@@ -1,5 +1,7 @@
 require "formula"
 require "tempfile"
+require "fileutils"
+
 
 class Ah < Formula
   homepage "https://github.com/9seconds/ah"
@@ -18,6 +20,7 @@ class Ah < Formula
   def install
     Dir.mktmpdir("ah") do |dir|
       ENV["GOPATH"] = dir
+      FileUtils.mkdir_p "#{dir}/src/github.com/9seconds"
       File.symlink(Dir.pwd, "#{dir}/src/github.com/9seconds/ah")
       system "make prog-build"
     end
