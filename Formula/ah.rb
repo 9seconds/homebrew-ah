@@ -15,8 +15,10 @@ class Ah < Formula
   depends_on "go" => :build
 
   def install
-    ENV["AUTO_GOPATH"] = "1"
-    system "make prog-build"
+    Dir.mktmpdir do |dir|
+      ENV["GOPATH"] = dir
+      system "make prog-build"
+    end
     bin.install "ah"
   end
 
