@@ -1,4 +1,5 @@
 require "formula"
+require "tempfile"
 
 class Ah < Formula
   homepage "https://github.com/9seconds/ah"
@@ -15,7 +16,7 @@ class Ah < Formula
   depends_on "go" => :build
 
   def install
-    Dir.mktmpdir do |dir|
+    Dir.mktmpdir("ah") do |dir|
       ENV["GOPATH"] = dir
       system "make prog-build"
     end
