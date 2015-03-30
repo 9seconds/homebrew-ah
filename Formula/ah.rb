@@ -20,14 +20,16 @@ class Ah < Formula
   def install
     Dir.mktmpdir("ah") do |dir|
       ENV["GOPATH"] = dir
+      system "go", "get", "github.com/tools/godep"
+      ENV["PATH"] += ":#{dir}/bin"
 
       FileUtils.mkdir_p "#{dir}/src/github.com/9seconds"
       File.symlink(Dir.pwd, "#{dir}/src/github.com/9seconds/ah")
 
-      system "go", "get", "github.com/tools/godep"
       system "make prog-build"
+
+      bin.install "ah"
     end
-    bin.install "ah"
   end
 
   test do
