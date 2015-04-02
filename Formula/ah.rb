@@ -1,13 +1,13 @@
-require "formula"
-require "tempfile"
-require "fileutils"
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
 
 class Ah < Formula
   homepage "https://github.com/9seconds/ah"
-  url "https://github.com/9seconds/ah.git", :tag => "0.14.2"
-  version "0.14.2"
+  url "https://github.com/9seconds/ah.git", using: :git, :tag => "0.14.2"
   sha1 ""
+
+  head "https://github.com/9seconds/ah.git", using: :git
 
   bottle do
     sha1 "7563b28df830baa880731b9448e88b99dcb68420" => :mavericks
@@ -19,14 +19,14 @@ class Ah < Formula
 
   def install
     Dir.mktmpdir("ah") do |dir|
-      ENV["GOPATH"] = dir
+      ENV.prepend_path "GOPATH", dir
       system "go", "get", "github.com/tools/godep"
-      ENV["PATH"] += ":#{dir}/bin"
+      ENV.prepend_path "PATH", "#{dir}/bin"
 
-      FileUtils.mkdir_p "#{dir}/src/github.com/9seconds"
+      mkdir_p "#{dir}/src/github.com/9seconds"
       File.symlink(Dir.pwd, "#{dir}/src/github.com/9seconds/ah")
 
-      system "make prog-build"
+      system "make", "prog-build"
 
       bin.install "ah"
     end
